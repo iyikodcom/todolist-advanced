@@ -1,0 +1,5 @@
+#non-todolist{
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    z-index:10;
+}
