@@ -84,3 +84,15 @@ $('#createTodoList').click(function () {
 
 });
 //-- -
+
+//-- +
+//--
+$(document).on('click', '.todo', function(){
+
+    let id = $(this).attr('data-id');
+    let status = ($(this).attr('data-status') === 'true');
+
+    (status) ? $(this).attr('data-status','false').find('i').removeClass('bi-check-circle-fill text-success').addClass('bi-circle') : $(this).attr('data-status','true').find('i').removeClass('bi-circle').addClass('bi-check-circle-fill text-success');
+
+});
+//-- -

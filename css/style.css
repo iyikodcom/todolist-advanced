@@ -1,5 +1,13 @@
-#non-todolist{
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    z-index:10;
+hr {
+    background-color: var(--bs-gray-300) !important;
+    opacity: 1 !important;
+}
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.todo:hover {
+    cursor: pointer;
 }
