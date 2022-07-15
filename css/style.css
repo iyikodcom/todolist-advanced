@@ -8,6 +8,6 @@ hr {
     box-shadow: none !important;
 }
 
-.todo:hover {
+.todo:hover, .list:hover {
     cursor: pointer;
 }
