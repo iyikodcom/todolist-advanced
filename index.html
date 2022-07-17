@@ -22,6 +22,18 @@
 <body class="bg-light">
     <div class="container my-4">
         <div class="row g-4">
+            <!-- languages -->
+            <div class="col-12">
+                <div id="languages" class="d-flex justify-content-center">
+                    <button type="button" class="lang btn btn-link py-0 px-1">
+                        <img src="img/turkey.png" class="img-fluid rounded">
+                    </button>
+                    <button type="button" class="lang btn btn-link py-0 px-1">
+                        <img src="img/united-kingdom.png" class="img-fluid rounded">
+                    </button>
+                </div>
+            </div>
+            <!-- ./languages -->
             <!-- create todo list -->
             <div class="col-12">
                 <div id="createTodoList" class="bg-white border rounded p-3">
@@ -31,7 +43,7 @@
                     <hr />
                     <main>
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control" id="todoListName"
+                            <input type="text" class="form-control" id="inputTodoListName"
                                 placeholder="Enter Todolist's name...">
                             <button type="button" id="btnCreateTodoList" class="btn btn-primary">
                                 <i class="bi bi-plus-lg me-2"></i>Create
@@ -78,22 +90,7 @@
         <div id="modalAddTodo" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Todo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3">
-                        <textarea class="form-control" id="inputTodo" rows="10" style="resize:none;"
-                            placeholder="Enter todo..."></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="btnModalAddTodo">
-                            <i class="bi bi-plus-lg me-2"></i>Add
-                        </button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                            <i class="bi bi-x-lg me-2"></i>Close
-                        </button>
-                    </div>
+                    <div class="modal-body p-0"></div>
                 </div>
             </div>
         </div>
@@ -125,6 +122,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="js/template.js"></script>
     <script src="js/script.js"></script>
 </body>
 

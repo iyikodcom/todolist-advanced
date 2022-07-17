@@ -7,187 +7,13 @@ let listID = 0;
 //-- +
 //--modallar
 //--todo ekleme işleminin yapılacağı modal
-let domAddTodo = document.getElementById('modalAddTodo');
-let modalAddTodo = new bootstrap.Modal(domAddTodo);
+let modalAddTodo = new bootstrap.Modal(document.getElementById('modalAddTodo'));
 //-- -
 
 //-- +
 //--offcanvaslar
 //--todoLists'in mobil versiyonun bulunduğu offcanvas
-let domTodoListsMobile = document.getElementById('offcanvasTodoLists')
-let offcanvasTodoListsMobile = new bootstrap.Offcanvas(domTodoListsMobile)
-//-- -
-
-//-- +
-//--şablonlar
-//--"createTodoList" ve "todos" alanlarında kullanılan alert şablonu
-const tmplAlert = message => {
-    return `<div class="alert alert-info mb-0 mt-3" role="alert">
-        ${message}
-    </div>`;
-}
-//--"todoLists > header" alanında kullanılan şablonu
-const tmplTodoListsHeader = status => {
-    return `<div class="d-flex justify-content-between">
-        <h2 class="text-secondary mb-0">Todo Lists</h2>
-        <div>
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-gear-fill"></i>
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item text-primary" href="#">
-                            <i class="bi bi-upload me-2"></i>Import
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item text-primary ${(status) ? '' : 'disabled'}" href="#">
-                            <i class="bi bi-download me-2"></i>Export
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btnAllListDelete dropdown-item text-danger ${(status) ? '' : 'disabled'}" href="#">
-                            <i class="bi bi-trash-fill me-2"></i>Delete all lists
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>`;
-}
-//--"todoLists > main" alanına eklenecek eleman placeholder şablonu
-const tmplTodoListsItemPlaceholder = repeat => {
-    let tmpl = `<div class="col-12">
-        <div class="row g-2">
-            <div class="col-9">
-                <div class="placeholder-glow">
-                    <span class="placeholder col-12 rounded bg-secondary" style="min-height:1.5em;"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="placeholder-glow">
-                    <span class="placeholder col-12 rounded bg-danger" style="min-height:1.5em;"></span>
-                </div>
-            </div>
-        </div>
-    </div>`;
-
-    return tmpl.repeat(repeat);
-}
-//--"todoLists > main" alanına eklenecek eleman şablonu
-const tmplTodoListsItem = (id, name) => {
-    return `<div class="col-12">
-        <div class="d-flex">
-            <div class="flex-grow-1" style="min-width: 0;">
-                <div data-id="${id}" class="list text-secondary border rounded d-flex align-items-center px-2 h-100">
-                    <i class="bi bi-caret-right-fill me-2"></i>
-                    <p class="mb-0 text-truncate">${name}</p>
-                </div>
-            </div>
-            <button data-id="${id}" type="button" class="todoListDelete btn btn-danger ms-2">
-                <i class="bi bi-trash-fill"></i>
-            </button>
-        </div>
-    </div>`;
-}
-//--"todos > header" alanına eklenecek header placeholder şablonu
-const tmplTodosHeaderPlaceholder = () => {
-    return `<div class="row">
-        <div class="col-6">
-            <div class="placeholder-glow">
-                <span class="placeholder col-12 rounded bg-secondary" style="min-height:2em;"></span>
-            </div>
-        </div>
-        <div class="col-3 offset-3">
-            <div class="placeholder-glow">
-                <span class="placeholder col-12 rounded bg-secondary" style="min-height:2em;"></span>
-            </div>
-        </div>
-    </div>`;
-}
-//--"todos > header" alanına eklenecek header şablon
-const tmplTodosHeader = (name, status) => {
-    return `<div class="d-flex justify-content-between">
-        <h2 class="text-secondary mb-0">${name}</h2>
-        <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button"data-bs-toggle="dropdown">
-                <i class="bi bi-gear-fill"></i>
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a id="btnAllTodoDelete" class="dropdown-item text-danger ${(status) ? '' : 'disabled'}" href="#">
-                        <i class="bi bi-trash-fill me-2"></i>Delete all todos
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>`;
-}
-//--"todos > todoAdd" alanına eklenecek placeholder şablonu
-const tmplTodosAddTodoPlaceholder = () => {
-    return `<div class="placeholder-glow">
-        <span class="placeholder col-12 rounded bg-primary" style="min-height:2em;"></span>
-    </div>`;
-}
-//--"todos > todoAdd" alanına eklenecek şablon
-const tmplTodosAddTodo = () => {
-    return `<button type="button" id="btnAddTodo" class="btn btn-primary w-100">
-        <i class="bi bi-plus-lg me-2"></i>Add Todo
-    </button>
-    <div class="alerts"></div>`;
-}
-//--"todos > main" alanına eklenecek eleman placeholder şablonu
-const tmplTodosItemPlaceholder = repeat => {
-    let tmpl = `<div class="col-12">
-        <div class="row g-2">
-            <div class="col-9">
-                <div class="placeholder-glow">
-                    <span class="placeholder col-12 rounded bg-secondary" style="min-height:1.5em;"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="placeholder-glow">
-                    <span class="placeholder col-12 rounded bg-success" style="min-height:1.5em;"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="placeholder-glow">
-                    <span class="placeholder col-12 rounded bg-danger" style="min-height:1.5em;"></span>
-                </div>
-            </div>
-        </div>
-    </div>`;
-
-    return tmpl.repeat(repeat);
-}
-//--"todos > main" alanına eklenecek eleman şablonu
-const tmplTodosItem = (id, value, status) => {
-    return `<div class="col-12">
-        <div class="d-flex">
-            <div class="flex-grow-1" style="min-width: 0;">
-                <div data-id="${id}" class="todo text-secondary border rounded d-flex align-items-center px-2 h-100">
-                    ${(status) ? '<i class="bi bi-check-circle-fill me-2 text-success"></i>' : '<i class="bi bi-circle me-2"></i>'}
-                    <p class="mb-0 text-truncate">${value}</p>
-                </div>
-            </div>
-            <button data-id="${id}" type="button" class="todoEdit btn btn-success ms-2">
-                <i class="bi bi-pencil-square"></i>
-            </button>
-            <button data-id="${id}" type="button" class="todoDelete btn btn-danger ms-2">
-                <i class="bi bi-trash-fill"></i>
-            </button>
-        </div>
-    </div>`;
-}
-//--"offcanvasTodoLists" offcanvas'ını açan butonun şablonu
-const tmpltodoListsMobileMenuButton = () => {
-    return `<button type="button" class="btn btn-outline-secondary btn-lg border-0 w-100">
-        <h2 class="mb-0">
-            <i class="bi bi-list me-2"></i>Todo Lists
-        </h2>
-    </button>`;
-}
+let offcanvasTodoListsMobile = new bootstrap.Offcanvas(document.getElementById('offcanvasTodoLists'));
 //-- -
 
 //-- +
@@ -236,9 +62,11 @@ const render = () => {
     $('#todos #addTodo').empty();
     $('#todos main .row').empty();
     $('#todoListsMobileMenuButton').empty();
+    $('#modalAddTodo .modal-body').empty();
 
     //--herhangi bir koşula bağlı olmayan alanları ekliyoruz
     $('#todoListsMobileMenuButton').html(tmpltodoListsMobileMenuButton());
+    $('#modalAddTodo .modal-body').html(tmplModalAddTodo());
 
     //--dizinin eleman sayısına göre gerekli alanlarda işlemler yapıyoruz
     //--dizinin içerisinde başlangıçta eleman var ise
@@ -252,7 +80,7 @@ const render = () => {
 
         $('#todos #addTodo').html(tmplTodosAddTodo());
 
-        (arrayGreaterThanZero(todoLists[listID].todos)) ? true : $('#todos #addTodo .alerts').html(tmplAlert('<b>Hint:</b> Todo not found !!! Please add todo.'));
+        (arrayGreaterThanZero(todoLists[listID].todos)) ? true : $('#todos #addTodo .alerts').html(tmplAlert('alert-info', '<b>Hint:</b> Todo not found !!! Please add todo.'));
 
         (arrayGreaterThanZero(todoLists[listID].todos)) ? targetAddItems('todos') : $('#todos main .row').html(tmplTodosItemPlaceholder(5));
     }
@@ -260,7 +88,7 @@ const render = () => {
     else
     {
         
-        $('#createTodoList main .alerts').html(tmplAlert('<b>Hint:</b> Todo list not found !!! Please create a new todo list.'));
+        $('#createTodoList main .alerts').html(tmplAlert('alert-info', '<b>Hint:</b> Todo list not found !!! Please create a new todo list.'));
         
         $('.todoLists header').html(tmplTodoListsHeader(false));
        
@@ -291,40 +119,38 @@ $(document).ready(function () {
 //-- -
 
 //-- +
-//--Yapılacaklar listesi oluştur butonuna tıklandığında yapılacak işlemler
+//--yapılacaklar listesi oluştur butonuna tıklandığında yapılacak işlemler
 $('#btnCreateTodoList').click(function () {
 
-    //--Yapılacaklar listesinin adının bulunacağı input seçiliyor
-    let todoListName = $('#todoListName');
-
-    //--İsim değeri alınıyor
+    //--yapılacaklar listesinin adının bulunacağı input seçiliyor
+    let todoListName = $('#inputTodoListName');
+    //--isim değeri alınıyor
     let getName = todoListName.val();
-
-    //--İnput'un boş olup olmadığı kontrol ediliyor
+    //--input'un boş olup olmadığı kontrol ediliyor
+    //--boş ise
     if (getName.length === 0) {
 
-        //--boş ise
-
-        alert('You need to enter name !!!');
+        //--input'a "border-danger" class'ı ekliyoruz
+        $('#inputTodoListName').addClass('border-danger');
+        //--"alerts" alanına alert ekliyoruz
+        $('#createTodoList main .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> You need to enter todolist\'s name !!!'));
 
     }
+    //--dolu ise
     else 
     {
-
-        //--boş değil ise
-
-        //--Yukarda input'un değerini daha öncesinde değişkene aktardığımız için input'u temizliyoruz
+        //--input'a eklenmiş "border-danger" class'ı var ise onu siliyoruz
+        $('#inputTodoListName').removeClass('border-danger');
+        //--input'u temizliyoruz
         todoListName.val('');
-
         /*--Yapılacak listelerine yeni bir liste ekliyoruz, bunun için isim değerini kullanıyoruz ve 
         yapılacak maddelerin bulunacağı boş diziyi ekliyoruz*/
         todoLists.push({ name: getName, todos: [] });
-
         //--localStorage'deki todoLists değişkenini güncelliyoruz
         saveTodoList();
-
+        //--todoLists dizisinin son elemanının index değeri alınıyor
         listID = arrayLastID(todoLists);
-
+        //--render işlemi gerçekleştiriyor
         render();
 
     }
@@ -344,27 +170,39 @@ $(document).on('click', '#btnAddTodo', function(){
 
 //-- +
 //--"modalAddTodo" üzerinde bulunan "Add" butonuna tıklayınca yapılacak işlemler
-$('#btnModalAddTodo').click(function(){
+$(document).on('click', '#btnModalAddTodo', function(){
 
-    //--inputTodo'nun değeri alınıyor
-    let getValue = $('#inputTodo').val();
-    //--value ve status değerleri todoLists değişkenine ekleniyor
-    todoLists[listID].todos.push({value: getValue, status: false});
-    //--localStorage'deki todoLists değişkenini güncelliyoruz
-    saveTodoList();
-    //--render işlemi gerçekleştiriyor
-    render();
-    //--modal kapanıyor
-    modalAddTodo.hide();
+    //--yapılacak maddesinin değerinin bulunduğu inputu seçiyoruz
+    let inputTodo = $('#inputTodo');
+    //--değeri alıyoruz
+    let getValue = inputTodo.val();
+    //--"alerts" alanını temizliyoruz
+    $('#modalAddTodo .modal-body .alerts').empty();
+    //--input'un boş olup olmadığı kontrol ediliyor
+    //--boş ise
+    if (getValue.length === 0) {
 
-});
-//-- -
+        //--input'a "border-danger" class'ı ekliyoruz
+        $('#inputTodo').addClass('border-danger');
+        //--"alerts" alanına alert ekliyoruz
+        $('#modalAddTodo .modal-body .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
 
-//-- +
-//--"modalAddTodo" kapandığında yapılacak işlemler
-domAddTodo.addEventListener('hidden.bs.modal', function (event) {
-    //--inputTodo'nun içerdiği değer siliniyor
-    $('#inputTodo').val('');
+    }
+    //--dolu ise
+    else 
+    {
+        //--input'a eklenmiş "border-danger" class'ı var ise onu siliyoruz
+        $('#inputTodo').removeClass('border-danger');
+        //--value ve status değerleri todoLists değişkenine ekleniyor
+        todoLists[listID].todos.push({value: getValue, status: false});
+        //--localStorage'deki todoLists değişkenini güncelliyoruz
+        saveTodoList();
+        //--render işlemi gerçekleştiriyor
+        render();
+        //--modal kapanıyor
+        modalAddTodo.hide();
+
+    }
 
 });
 //-- -
@@ -482,6 +320,19 @@ $(document).on('click', '#offcanvasTodoLists .offcanvas-body .list', function(){
 
     //--offcanvas kapanıyor
     offcanvasTodoListsMobile.hide();
+
+});
+//-- -
+
+//-- +
+//--".list", ".todo", ".lang" classlarında mouseover ve mouseout olayları gerçekleştiğinde yapılacak işlemler
+$(document).on('mouseover', '.list, .todo', function(){
+
+    $(this).addClass('bg-light');
+
+}).on('mouseout', '.list, .todo', function(){
+
+    $(this).removeClass('bg-light');
 
 });
 //-- -

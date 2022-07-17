@@ -11,3 +11,12 @@ hr {
 .todo:hover, .list:hover {
     cursor: pointer;
 }
+
+.placeholder {
+    cursor: auto !important;
+}
+
+.dropdown-item.disabled, .dropdown-item:disabled {
+    background-color: var(--bs-gray-100) !important;
+    color: var(--bs-gray-400) !important;
+}
