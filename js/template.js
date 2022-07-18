@@ -17,12 +17,12 @@ const tmplTodoListsHeader = status => {
                 </button>
                 <ul class="dropdown-menu p-0 overflow-hidden">
                     <li>
-                        <a class="btnImportTodoLists dropdown-item text-primary" href="#">
+                        <a data-type="import" class="btnImportTodoLists dropdown-item text-primary" href="#">
                             <i class="bi bi-upload me-2"></i>Import
                         </a>
                     </li>
                     <li>
-                        <a class="btnExportTodoLists dropdown-item text-primary ${(status) ? '' : 'disabled'}" href="#">
+                        <a data-type="export" class="btnExportTodoLists dropdown-item text-primary ${(status) ? '' : 'disabled'}" href="#">
                             <i class="bi bi-download me-2"></i>Export
                         </a>
                     </li>
@@ -114,7 +114,7 @@ const tmplTodosAddTodoPlaceholder = () => {
 }
 //--"todos > todoAdd" alanına eklenecek şablon
 const tmplTodosAddTodo = () => {
-    return `<button type="button" id="btnAddTodo" class="btn btn-primary w-100">
+    return `<button data-type="add" type="button" id="btnAddTodo" class="btn btn-primary w-100">
         <i class="bi bi-plus-lg me-2"></i>Add Todo
     </button>
     <div class="alerts"></div>`;
@@ -153,7 +153,7 @@ const tmplTodosItem = (id, value, status) => {
                     <p class="mb-0 text-truncate">${value}</p>
                 </div>
             </div>
-            <button data-id="${id}" type="button" class="todoDetails btn btn-success ms-2">
+            <button data-id="${id}" data-type="details" type="button" class="todoDetails btn btn-success ms-2">
                 <i class="bi bi-pencil-square"></i>
             </button>
             <button data-id="${id}" type="button" class="todoDelete btn btn-danger ms-2">
@@ -240,20 +240,16 @@ const tmplModalImportTodoLists = () => {
 //--
 const tmplModalExportTodoLists = () => {
     return `<div class="d-flex pt-3 px-3">
-        <h5 class="text-secondary flex-grow-1 mb-0">Import</h5>
+        <h5 class="text-secondary flex-grow-1 mb-0">Export</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
     <div class="px-3">
-        <textarea class="form-control" id="inputImportTodoLists" rows="10" style="resize:none;"
-        placeholder="Enter JSON..."></textarea>
+        <textarea class="form-control" id="inputExportTodoLists" rows="10" style="resize:none;" readonly></textarea>
         <div class="alerts"></div>
     </div>
     <hr/>
     <div class="d-flex pb-3 px-3 justify-content-end">
-        <button type="button" class="btn btn-primary me-2" id="btnModalImport">
-            <i class="bi bi-upload me-2"></i>Import
-        </button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
             <i class="bi bi-x-lg me-2"></i>Close
         </button>

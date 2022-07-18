@@ -2,22 +2,21 @@
 //--global değişkenler
 let todoLists;
 let listID = 0;
+let modalType;
 let getTodoValue, getTodoID;
 //-- -
 
 //-- +
 //--modallar
 //--todo ekleme işleminin yapılacağı modal
-let modalAddTodo = new bootstrap.Modal(document.getElementById('modalAddTodo'));
-let modalDetailsTodo = new bootstrap.Modal(document.getElementById('modalDetailsTodo'));
-let modalImportTodoLists = new bootstrap.Modal(document.getElementById('modalImportTodoLists'));
-let modalExportTodoLists = new bootstrap.Modal(document.getElementById('modalExportTodoLists'));
+//let modalAddTodo = new bootstrap.Modal(document.getElementById('modalAddTodo'));
+let modal = new bootstrap.Modal(document.querySelector('.modal'));
 //-- -
 
 //-- +
 //--offcanvaslar
 //--todoLists'in mobil versiyonun bulunduğu offcanvas
-let offcanvasTodoListsMobile = new bootstrap.Offcanvas(document.getElementById('offcanvasTodoLists'));
+let offcanvasTodoListsMobile = new bootstrap.Offcanvas(document.querySelector('.offcanvas'));
 //-- -
 
 //-- +
@@ -55,6 +54,16 @@ const targetAddItems = type => {
 
 }
 
+//--hangi modal şablonun yükleneceğini belirleyen foksiyon
+const modalTmpl = type => {
+
+    return (type === 'add') ? tmplModalAddTodo() :
+    (type === 'details') ? tmplModalDetailsTodo(getTodoID, getTodoValue) :
+    (type === 'import') ? tmplModalImportTodoLists() :
+    (type === 'export') ? tmplModalExportTodoLists() : false;
+
+}
+
 //--genel render işlemini yapan fonksiyon
 const render = () => {
 
@@ -66,17 +75,11 @@ const render = () => {
     $('#todos #addTodo').empty();
     $('#todos main .row').empty();
     $('#todoListsMobileMenuButton').empty();
-    
-    $('#modalAddTodo .modal-body').empty();
-    $('#modalDetailsTodo .modal-body').empty();
-    $('#modalImportTodoLists .modal-body').empty();
-    $('#modalImportTodoLists .modal-body').empty();
+    $('.modal .modal-body').empty();
 
     //--herhangi bir koşula bağlı olmayan alanları ekliyoruz
     $('#todoListsMobileMenuButton').html(tmpltodoListsMobileMenuButton());
-    $('#modalAddTodo .modal-body').html(tmplModalAddTodo());
-    $('#modalDetailsTodo .modal-body').html(tmplModalDetailsTodo(getTodoID, getTodoValue));
-    $('#modalImportTodoLists .modal-body').html(tmplModalImportTodoLists());
+    $('.modal .modal-body').html(modalTmpl(modalType));
 
     //--dizinin eleman sayısına göre gerekli alanlarda işlemler yapıyoruz
     //--dizinin içerisinde başlangıçta eleman var ise
@@ -172,8 +175,13 @@ $('#btnCreateTodoList').click(function () {
 //--"todos" alanındaki "Add Todo" butonuna tıklayınca yapılacak işlemler
 $(document).on('click', '#btnAddTodo', function(){
     
+    //--"data-type" attribute'ndeki değer modalType değişkenine eşitleniyor
+    modalType = $(this).attr('data-type');
+    //--render işlemi gerçekleştiriyor
+    //--burada render işlemi yapıyoruz ki modal'ın içersine modalType değerini aktarabilelim
+    render();
     //--modal açılıyor
-    modalAddTodo.show();
+    modal.show();
 
 });
 //-- -
@@ -187,7 +195,7 @@ $(document).on('click', '#btnModalAddTodo', function(){
     //--değeri alıyoruz
     let getValue = input.val();
     //--"alerts" alanını temizliyoruz, her bu butona tıkladığımızda hata mesajı basabilir
-    $('#modalAddTodo .modal-body .alerts').empty();
+    $('.modal .alerts').empty();
     //--input'un boş olup olmadığı kontrol ediliyor
     //--boş ise
     if (getValue.length === 0) {
@@ -195,7 +203,7 @@ $(document).on('click', '#btnModalAddTodo', function(){
         //--input'a "border-danger" class'ı ekliyoruz
         input.addClass('border-danger');
         //--"alerts" alanına alert ekliyoruz
-        $('#modalAddTodo .modal-body .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
+        $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
 
     }
     //--dolu ise
@@ -210,7 +218,7 @@ $(document).on('click', '#btnModalAddTodo', function(){
         //--render işlemi gerçekleştiriyor
         render();
         //--modal kapanıyor
-        modalAddTodo.hide();
+        modal.hide();
 
     }
 
@@ -349,7 +357,7 @@ $(document).on('mouseover', '.list, .todo', function(){
 
 //-- +
 //--"modalAddTodo" modalları kapandığında yapılacak olan işlemler
-$(document).on('hidden.bs.modal', '#modalAddTodo, #modalDetailsTodo, #modalImportTodoLists', function () {
+$(document).on('hidden.bs.modal', '.modal', function () {
     //--render işlemi gerçekleştiriyor
     render();
 })
@@ -360,15 +368,17 @@ $(document).on('hidden.bs.modal', '#modalAddTodo, #modalDetailsTodo, #modalImpor
 "todoDetails" classına sahip elemanlara tıklayınca yapılacak işlemler--*/
 $(document).on('click', '.todoDetails', function(){
 
+    //--"data-type" attribute'ndeki değer modalType değişkenine eşitleniyor
+    modalType = $(this).attr('data-type');
     //--elemanın data-id attribute'ü getTodoID değişkenine eşitleniyor
     getTodoID = $(this).attr('data-id');
     //--todoLists'in içersinde todos'lardan id'si bilinen todo'nun değeri alınıyor
     getTodoValue = todoLists[listID].todos[getTodoID].value;
     //--render işlemi gerçekleştiriyor
-    //--burada render işlemi yapıyoruz ki modal'ın içersine getTodoID ve getTodoValue değerlerini aktarabilelim
+    //--burada render işlemi yapıyoruz ki modal'ın içersine modalType, getTodoID ve getTodoValue değerlerini aktarabilelim
     render();
     //--modal açılıyor
-    modalDetailsTodo.show();
+    modal.show();
 
 });
 //-- -
@@ -382,7 +392,7 @@ $(document).on('click', '#btnModalUpdateTodo', function(){
     //--değeri alıyoruz
     let getValue = input.val();
     //--"alerts" alanını temizliyoruz, her bu butona tıkladığımızda hata mesajı basabilir
-    $('#modalDetailsTodo .modal-body .alerts').empty();
+    $('.modal .alerts').empty();
     //--input'un boş olup olmadığı kontrol ediliyor
     //--boş ise
     if (getValue.length === 0) {
@@ -390,7 +400,7 @@ $(document).on('click', '#btnModalUpdateTodo', function(){
         //--input'a "border-danger" class'ı ekliyoruz
         input.addClass('border-danger');
         //--"alerts" alanına alert ekliyoruz
-        $('#modalDetailsTodo .modal-body .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
+        $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
 
     }
     //--dolu ise
@@ -405,7 +415,7 @@ $(document).on('click', '#btnModalUpdateTodo', function(){
         //--render işlemi gerçekleştiriyor
         render();
         //--modal kapanıyor
-        modalDetailsTodo.hide();
+        modal.hide();
 
     }
 
@@ -413,25 +423,96 @@ $(document).on('click', '#btnModalUpdateTodo', function(){
 //-- -
 
 //-- +
-//--"btnImportTodoLists" id'sine tıklayınca yapılacak işlemler
+//--"btnImportTodoLists" classına tıklayınca yapılacak işlemler
 $(document).on('click', '.btnImportTodoLists', function(e){
 
     //--yapılacak işlem engelleniyor
     e.preventDefault();
+    //--"data-type" attribute'ndeki değer modalType değişkenine eşitleniyor
+    modalType = $(this).attr('data-type');
+    //--render işlemi gerçekleştiriyor
+    //--burada render işlemi yapıyoruz ki modal'ın içersine modalType değerini aktarabilelim
+    render();
     //--modal açılıyor
-    modalImportTodoLists.show();
+    modal.show();
 
 });
 //-- -
 
 //-- +
-//--
+//--"btnModalImport" id'sine tıklandığında yapılacak işlemler
+$(document).on('click', '#btnModalImport', function(){
+
+    //--JSON formatında içeriğin ekleneceği inputu seçiyoruz
+    let input = $('#inputImportTodoLists');
+    //--değeri alıyoruz
+    let getValue = input.val();
+    //--"alerts" alanını temizliyoruz, her bu butona tıkladığımızda hata mesajı basabilir
+    $('.modal .alerts').empty();
+    //--input'un boş olup olmadığı kontrol ediliyor
+    //--boş ise
+    if (getValue.length === 0) {
+
+        //--input'a "border-danger" class'ı ekliyoruz
+        input.addClass('border-danger');
+        //--"alerts" alanına alert ekliyoruz
+        $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter JSON !!!'));
+
+    }
+    //--dolu ise
+    else 
+    {
+        try {
+
+            //--input'tan alınan değeri JSON formatına çeviriyoruz
+            let JSON = $.parseJSON(getValue);
+            //--input'a eklenmiş "border-danger" class'ı var ise onu siliyoruz
+            input.removeClass('border-danger');
+            //--import edilen todolist'deki elemanları döngü yardımı ile todoLists değişkenine aktarıyoruz
+            $.each(JSON, function(index, row){
+                //--her elemanı tektek todolist'e ekliyoruz
+                todoLists.push(row);
+
+            });
+            //--todoLists dizisinin son elemanının index değeri alınıyor
+            listID = arrayLastID(todoLists);
+            //--localStorage'deki todoLists değişkenini güncelliyoruz
+            saveTodoList();
+            //--render işlemi gerçekleştiriyor
+            render();
+            //--modal kapanıyor
+            modal.hide();
+
+        }
+        catch (err) 
+        {
+            //--input'a "border-danger" class'ı ekliyoruz
+            input.addClass('border-danger');
+            //--"alerts" alanına alert ekliyoruz
+            $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> JSON format is incorrect !!!'));
+
+        }
+
+    }
+
+});
+//-- -
+
+//-- +
+//--"btnExportTodoLists" classına tıklayınca yapılacak işlemler
 $(document).on('click', '.btnExportTodoLists', function(e){
 
     //--yapılacak işlem engelleniyor
     e.preventDefault();
+    //--"data-type" attribute'ndeki değer modalType değişkenine eşitleniyor
+    modalType = $(this).attr('data-type');    
+    //--render işlemi gerçekleştiriyor
+    //--burada render işlemi yapıyoruz ki modal'ın içersine modalType değerini aktarabilelim
+    render();
+    //--JSON formatındaki todoLists değişkenini düz metine çevirerek dışarıya çıktı veriyoruz
+    $('#inputExportTodoLists').html(JSON.stringify(todoLists));
     //--modal açılıyor
-    modalExportTodoLists.show();
+    modal.show();
 
 });
 //-- -
