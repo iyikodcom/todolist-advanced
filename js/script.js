@@ -2,12 +2,16 @@
 //--global değişkenler
 let todoLists;
 let listID = 0;
+let getTodoValue, getTodoID;
 //-- -
 
 //-- +
 //--modallar
 //--todo ekleme işleminin yapılacağı modal
 let modalAddTodo = new bootstrap.Modal(document.getElementById('modalAddTodo'));
+let modalDetailsTodo = new bootstrap.Modal(document.getElementById('modalDetailsTodo'));
+let modalImportTodoLists = new bootstrap.Modal(document.getElementById('modalImportTodoLists'));
+let modalExportTodoLists = new bootstrap.Modal(document.getElementById('modalExportTodoLists'));
 //-- -
 
 //-- +
@@ -62,11 +66,17 @@ const render = () => {
     $('#todos #addTodo').empty();
     $('#todos main .row').empty();
     $('#todoListsMobileMenuButton').empty();
+    
     $('#modalAddTodo .modal-body').empty();
+    $('#modalDetailsTodo .modal-body').empty();
+    $('#modalImportTodoLists .modal-body').empty();
+    $('#modalImportTodoLists .modal-body').empty();
 
     //--herhangi bir koşula bağlı olmayan alanları ekliyoruz
     $('#todoListsMobileMenuButton').html(tmpltodoListsMobileMenuButton());
     $('#modalAddTodo .modal-body').html(tmplModalAddTodo());
+    $('#modalDetailsTodo .modal-body').html(tmplModalDetailsTodo(getTodoID, getTodoValue));
+    $('#modalImportTodoLists .modal-body').html(tmplModalImportTodoLists());
 
     //--dizinin eleman sayısına göre gerekli alanlarda işlemler yapıyoruz
     //--dizinin içerisinde başlangıçta eleman var ise
@@ -173,17 +183,17 @@ $(document).on('click', '#btnAddTodo', function(){
 $(document).on('click', '#btnModalAddTodo', function(){
 
     //--yapılacak maddesinin değerinin bulunduğu inputu seçiyoruz
-    let inputTodo = $('#inputTodo');
+    let input = $('#inputAddTodo');
     //--değeri alıyoruz
-    let getValue = inputTodo.val();
-    //--"alerts" alanını temizliyoruz
+    let getValue = input.val();
+    //--"alerts" alanını temizliyoruz, her bu butona tıkladığımızda hata mesajı basabilir
     $('#modalAddTodo .modal-body .alerts').empty();
     //--input'un boş olup olmadığı kontrol ediliyor
     //--boş ise
     if (getValue.length === 0) {
 
         //--input'a "border-danger" class'ı ekliyoruz
-        $('#inputTodo').addClass('border-danger');
+        input.addClass('border-danger');
         //--"alerts" alanına alert ekliyoruz
         $('#modalAddTodo .modal-body .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
 
@@ -192,7 +202,7 @@ $(document).on('click', '#btnModalAddTodo', function(){
     else 
     {
         //--input'a eklenmiş "border-danger" class'ı var ise onu siliyoruz
-        $('#inputTodo').removeClass('border-danger');
+        input.removeClass('border-danger');
         //--value ve status değerleri todoLists değişkenine ekleniyor
         todoLists[listID].todos.push({value: getValue, status: false});
         //--localStorage'deki todoLists değişkenini güncelliyoruz
@@ -333,6 +343,95 @@ $(document).on('mouseover', '.list, .todo', function(){
 }).on('mouseout', '.list, .todo', function(){
 
     $(this).removeClass('bg-light');
+
+});
+//-- -
+
+//-- +
+//--"modalAddTodo" modalları kapandığında yapılacak olan işlemler
+$(document).on('hidden.bs.modal', '#modalAddTodo, #modalDetailsTodo, #modalImportTodoLists', function () {
+    //--render işlemi gerçekleştiriyor
+    render();
+})
+//-- -
+
+//-- +
+/*--"todos > main" alanında bulunan her elemanın sahip olduğu 
+"todoDetails" classına sahip elemanlara tıklayınca yapılacak işlemler--*/
+$(document).on('click', '.todoDetails', function(){
+
+    //--elemanın data-id attribute'ü getTodoID değişkenine eşitleniyor
+    getTodoID = $(this).attr('data-id');
+    //--todoLists'in içersinde todos'lardan id'si bilinen todo'nun değeri alınıyor
+    getTodoValue = todoLists[listID].todos[getTodoID].value;
+    //--render işlemi gerçekleştiriyor
+    //--burada render işlemi yapıyoruz ki modal'ın içersine getTodoID ve getTodoValue değerlerini aktarabilelim
+    render();
+    //--modal açılıyor
+    modalDetailsTodo.show();
+
+});
+//-- -
+
+//-- +
+//--"modalDetailsTodo" üzerinde bulunan "Update" butonuna tıklayınca yapılacak işlemler
+$(document).on('click', '#btnModalUpdateTodo', function(){
+
+    //--yapılacak maddesinin değerinin bulunduğu inputu seçiyoruz
+    let input = $('#inputUpdateTodo');
+    //--değeri alıyoruz
+    let getValue = input.val();
+    //--"alerts" alanını temizliyoruz, her bu butona tıkladığımızda hata mesajı basabilir
+    $('#modalDetailsTodo .modal-body .alerts').empty();
+    //--input'un boş olup olmadığı kontrol ediliyor
+    //--boş ise
+    if (getValue.length === 0) {
+
+        //--input'a "border-danger" class'ı ekliyoruz
+        input.addClass('border-danger');
+        //--"alerts" alanına alert ekliyoruz
+        $('#modalDetailsTodo .modal-body .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
+
+    }
+    //--dolu ise
+    else 
+    {
+        //--input'a eklenmiş "border-danger" class'ı var ise onu siliyoruz
+        input.removeClass('border-danger');
+        //--input'daki değeri "todoList > todos > value" doğru konumdaki value'nin değerini güncelliyoruz
+        todoLists[listID].todos[getTodoID].value = getValue;
+        //--localStorage'deki todoLists değişkenini güncelliyoruz
+        saveTodoList();
+        //--render işlemi gerçekleştiriyor
+        render();
+        //--modal kapanıyor
+        modalDetailsTodo.hide();
+
+    }
+
+});
+//-- -
+
+//-- +
+//--"btnImportTodoLists" id'sine tıklayınca yapılacak işlemler
+$(document).on('click', '.btnImportTodoLists', function(e){
+
+    //--yapılacak işlem engelleniyor
+    e.preventDefault();
+    //--modal açılıyor
+    modalImportTodoLists.show();
+
+});
+//-- -
+
+//-- +
+//--
+$(document).on('click', '.btnExportTodoLists', function(e){
+
+    //--yapılacak işlem engelleniyor
+    e.preventDefault();
+    //--modal açılıyor
+    modalExportTodoLists.show();
 
 });
 //-- -

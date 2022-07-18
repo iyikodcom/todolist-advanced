@@ -17,12 +17,12 @@ const tmplTodoListsHeader = status => {
                 </button>
                 <ul class="dropdown-menu p-0 overflow-hidden">
                     <li>
-                        <a class="dropdown-item text-primary" href="#">
+                        <a class="btnImportTodoLists dropdown-item text-primary" href="#">
                             <i class="bi bi-upload me-2"></i>Import
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item text-primary ${(status) ? '' : 'disabled'}" href="#">
+                        <a class="btnExportTodoLists dropdown-item text-primary ${(status) ? '' : 'disabled'}" href="#">
                             <i class="bi bi-download me-2"></i>Export
                         </a>
                     </li>
@@ -153,7 +153,7 @@ const tmplTodosItem = (id, value, status) => {
                     <p class="mb-0 text-truncate">${value}</p>
                 </div>
             </div>
-            <button data-id="${id}" type="button" class="todoEdit btn btn-success ms-2">
+            <button data-id="${id}" type="button" class="todoDetails btn btn-success ms-2">
                 <i class="bi bi-pencil-square"></i>
             </button>
             <button data-id="${id}" type="button" class="todoDelete btn btn-danger ms-2">
@@ -173,12 +173,12 @@ const tmpltodoListsMobileMenuButton = () => {
 //--"modalAddTodo" modal'ının şablonu
 const tmplModalAddTodo = () => {
     return `<div class="d-flex pt-3 px-3">
-        <h5 class="text-secondary flex-grow-1 mb-0">Add Todo</h5>
+        <h5 class="text-secondary flex-grow-1 mb-0">Add</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
     <div class="px-3">
-        <textarea class="form-control" id="inputTodo" rows="10" style="resize:none;"
+        <textarea class="form-control" id="inputAddTodo" rows="10" style="resize:none;"
         placeholder="Enter todo..."></textarea>
         <div class="alerts"></div>
     </div>
@@ -186,6 +186,73 @@ const tmplModalAddTodo = () => {
     <div class="d-flex pb-3 px-3 justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="btnModalAddTodo">
             <i class="bi bi-plus-lg me-2"></i>Add
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            <i class="bi bi-x-lg me-2"></i>Close
+        </button>
+    </div>`;
+}
+//--"modalDetailsTodo" modal'ının şablonu
+const tmplModalDetailsTodo = (id, value) => {
+    return `<div class="d-flex pt-3 px-3">
+        <h5 class="text-secondary flex-grow-1 mb-0">Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <hr/>
+    <div class="px-3">
+        <textarea class="form-control" id="inputUpdateTodo" rows="10" style="resize:none;"
+        placeholder="Enter todo...">${value}</textarea>
+        <div class="alerts"></div>
+    </div>
+    <hr/>
+    <div class="d-flex pb-3 px-3 justify-content-end">
+        <button data-id="${id}" type="button" class="btn btn-primary me-2" id="btnModalUpdateTodo">
+            <i class="bi bi-arrow-repeat me-2"></i>Update
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            <i class="bi bi-x-lg me-2"></i>Close
+        </button>
+    </div>`;
+}
+//--
+const tmplModalImportTodoLists = () => {
+    return `<div class="d-flex pt-3 px-3">
+        <h5 class="text-secondary flex-grow-1 mb-0">Import</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <hr/>
+    <div class="px-3">
+        <textarea class="form-control" id="inputImportTodoLists" rows="10" style="resize:none;"
+        placeholder="Enter JSON..."></textarea>
+        <div class="alerts"></div>
+    </div>
+    <hr/>
+    <div class="d-flex pb-3 px-3 justify-content-end">
+        <button type="button" class="btn btn-primary me-2" id="btnModalImport">
+            <i class="bi bi-upload me-2"></i>Import
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            <i class="bi bi-x-lg me-2"></i>Close
+        </button>
+    </div>`;
+}
+
+//--
+const tmplModalExportTodoLists = () => {
+    return `<div class="d-flex pt-3 px-3">
+        <h5 class="text-secondary flex-grow-1 mb-0">Import</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <hr/>
+    <div class="px-3">
+        <textarea class="form-control" id="inputImportTodoLists" rows="10" style="resize:none;"
+        placeholder="Enter JSON..."></textarea>
+        <div class="alerts"></div>
+    </div>
+    <hr/>
+    <div class="d-flex pb-3 px-3 justify-content-end">
+        <button type="button" class="btn btn-primary me-2" id="btnModalImport">
+            <i class="bi bi-upload me-2"></i>Import
         </button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
             <i class="bi bi-x-lg me-2"></i>Close
