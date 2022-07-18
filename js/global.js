@@ -4,6 +4,7 @@ let todoLists;
 let listID = 0;
 let modalType;
 let getTodoValue, getTodoID;
+let lang = localStorage.getItem('lang') || 'tr';
 //-- -
 
 //-- +

@@ -1,5 +1,11 @@
 //-- +
 //--şablonlar
+//--dil butonlarının şablonları
+const tmplLangFlag = (lang, src, currentLang) => {
+    return `<button data-lang="${lang}" type="button" class="flag btn btn-link py-0 px-1 ${(lang === currentLang) ? '' : 'passive'}">
+        <img src="${src}" class="img-fluid rounded">
+    </button>`;
+}
 //--"createTodoList" ve "todos" alanlarında kullanılan alert şablonu
 const tmplAlert = (className, message) => {
     return `<div class="alert ${className} mb-0 mt-3" role="alert">
@@ -7,28 +13,27 @@ const tmplAlert = (className, message) => {
     </div>`;
 }
 //--"createTodoList" alanında kullanılan şablon
-const tmplCreateTodoList = () => {
+const tmplCreateTodoList = (title, placeholder, button) => {
     return `<header>
-        <h1 class="text-secondary mb-0 text-truncate">Create New Todo List</h1>
+        <h1 class="text-secondary mb-0 text-truncate">${title}</h1>
     </header>
     <hr />
     <main>
         <div class="input-group input-group-lg">
             <input type="text" class="form-control" id="inputTodoListName"
-                placeholder="Enter Todolist's name...">
+                placeholder="${placeholder}">
             <button type="button" id="btnCreateTodoList" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>Create
+                <i class="bi bi-plus-lg me-2"></i>${button}
             </button>
         </div>
         <div class="alerts"></div>
-        <div class="hints"></div>
     </main>`;
 }
 //--"todoLists > header" alanında kullanılan şablonu
-const tmplTodoListsHeader = status => {
+const tmplTodoListsHeader = (status, title, drp1, drp2, drp3) => {
     return `<div class="d-flex">
         <div class="flex-grow-1" style="min-width: 0;">
-            <h2 class="text-secondary mb-0 text-truncate">Todo Lists</h2>
+            <h2 class="text-secondary mb-0 text-truncate">${title}</h2>
         </div>
         <div>
             <div class="dropdown">
@@ -38,17 +43,17 @@ const tmplTodoListsHeader = status => {
                 <ul class="dropdown-menu p-0 overflow-hidden">
                     <li>
                         <a data-type="import" class="btnImportTodoLists dropdown-item text-primary" href="#">
-                            <i class="bi bi-upload me-2"></i>Import
+                            <i class="bi bi-upload me-2"></i>${drp1}
                         </a>
                     </li>
                     <li>
                         <a data-type="export" class="btnExportTodoLists dropdown-item text-primary ${(status) ? '' : 'disabled'}" href="#">
-                            <i class="bi bi-download me-2"></i>Export
+                            <i class="bi bi-download me-2"></i>${drp2}
                         </a>
                     </li>
                     <li>
                         <a class="btnAllListDelete dropdown-item text-danger ${(status) ? '' : 'disabled'}" href="#">
-                            <i class="bi bi-trash-fill me-2"></i>Delete all lists
+                            <i class="bi bi-trash-fill me-2"></i>${drp3}
                         </a>
                     </li>
                 </ul>
@@ -107,7 +112,7 @@ const tmplTodosHeaderPlaceholder = () => {
     </div>`;
 }
 //--"todos > header" alanına eklenecek header şablon
-const tmplTodosHeader = (name, status) => {
+const tmplTodosHeader = (name, status, drp1) => {
     return `<div class="d-flex">
         <div class="flex-grow-1" style="min-width: 0;">
             <h2 class="text-secondary mb-0 text-truncate">${name}</h2>
@@ -119,7 +124,7 @@ const tmplTodosHeader = (name, status) => {
             <ul class="dropdown-menu p-0 overflow-hidden">
                 <li>
                     <a id="btnAllTodoDelete" class="dropdown-item text-danger ${(status) ? '' : 'disabled'}" href="#">
-                        <i class="bi bi-trash-fill me-2"></i>Delete all todos
+                        <i class="bi bi-trash-fill me-2"></i>${drp1}
                     </a>
                 </li>
             </ul>
@@ -133,9 +138,9 @@ const tmplTodosAddTodoPlaceholder = () => {
     </div>`;
 }
 //--"todos > todoAdd" alanına eklenecek şablon
-const tmplTodosAddTodo = () => {
+const tmplTodosAddTodo = button => {
     return `<button data-type="add" type="button" id="btnAddTodo" class="btn btn-primary w-100">
-        <i class="bi bi-plus-lg me-2"></i>Add Todo
+        <i class="bi bi-plus-lg me-2"></i>${button}
     </button>
     <div class="alerts"></div>`;
 }
@@ -183,91 +188,90 @@ const tmplTodosItem = (id, value, status) => {
     </div>`;
 }
 //--"offcanvasTodoLists" offcanvas'ını açan butonun şablonu
-const tmpltodoListsMobileMenuButton = () => {
+const tmpltodoListsMobileMenuButton = button => {
     return `<button type="button" class="btn btn-outline-secondary btn-lg border-0 w-100">
         <h2 class="mb-0 text-truncate">
-            <i class="bi bi-list me-2"></i>Todo Lists
+            <i class="bi bi-list me-2"></i>${button}
         </h2>
     </button>`;
 }
 //--"modalAddTodo" modal'ının şablonu
-const tmplModalAddTodo = () => {
+const tmplModalAddTodo = (title, placeholder, button1, button2) => {
     return `<div class="d-flex pt-3 px-3">
         <div class="flex-grow-1" style="min-width: 0;">
-            <h5 class="text-secondary text-truncate mb-0">Add</h5>
+            <h5 class="text-secondary text-truncate mb-0">${title}</h5>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
     <div class="px-3">
         <textarea class="form-control" id="inputAddTodo" rows="10" style="resize:none;"
-        placeholder="Enter todo..."></textarea>
+        placeholder="${placeholder}"></textarea>
         <div class="alerts"></div>
     </div>
     <hr/>
     <div class="d-flex pb-3 px-3 justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="btnModalAddTodo">
-            <i class="bi bi-plus-lg me-2"></i>Add
+            <i class="bi bi-plus-lg me-2"></i>${button1}
         </button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-            <i class="bi bi-x-lg me-2"></i>Close
+            <i class="bi bi-x-lg me-2"></i>${button2}
         </button>
     </div>`;
 }
 //--"modalDetailsTodo" modal'ının şablonu
-const tmplModalDetailsTodo = (id, value) => {
+const tmplModalDetailsTodo = (id, value, title, placeholder, button1, button2) => {
     return `<div class="d-flex pt-3 px-3">
         <div class="flex-grow-1" style="min-width: 0;">
-            <h5 class="text-secondary text-truncate mb-0">Details</h5>
+            <h5 class="text-secondary text-truncate mb-0">${title}</h5>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
     <div class="px-3">
         <textarea class="form-control" id="inputUpdateTodo" rows="10" style="resize:none;"
-        placeholder="Enter todo...">${value}</textarea>
+        placeholder="${placeholder}">${value}</textarea>
         <div class="alerts"></div>
     </div>
     <hr/>
     <div class="d-flex pb-3 px-3 justify-content-end">
         <button data-id="${id}" type="button" class="btn btn-primary me-2" id="btnModalUpdateTodo">
-            <i class="bi bi-arrow-repeat me-2"></i>Update
+            <i class="bi bi-arrow-repeat me-2"></i>${button1}
         </button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-            <i class="bi bi-x-lg me-2"></i>Close
+            <i class="bi bi-x-lg me-2"></i>${button2}
         </button>
     </div>`;
 }
-//--
-const tmplModalImportTodoLists = () => {
+//--"modalImportTodoLists" modal'ının şablonu
+const tmplModalImportTodoLists = (title, placeholder, button1, button2) => {
     return `<div class="d-flex pt-3 px-3">
         <div class="flex-grow-1" style="min-width: 0;">
-            <h5 class="text-secondary text-truncate mb-0">Import</h5>
+            <h5 class="text-secondary text-truncate mb-0">${title}</h5>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
     <div class="px-3">
         <textarea class="form-control" id="inputImportTodoLists" rows="10" style="resize:none;"
-        placeholder="Enter JSON..."></textarea>
+        placeholder="${placeholder}"></textarea>
         <div class="alerts"></div>
     </div>
     <hr/>
     <div class="d-flex pb-3 px-3 justify-content-end">
         <button type="button" class="btn btn-primary me-2" id="btnModalImport">
-            <i class="bi bi-upload me-2"></i>Import
+            <i class="bi bi-upload me-2"></i>${button1}
         </button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-            <i class="bi bi-x-lg me-2"></i>Close
+            <i class="bi bi-x-lg me-2"></i>${button2}
         </button>
     </div>`;
 }
-
-//--
-const tmplModalExportTodoLists = () => {
+//--"modalExportTodoLists" modal'ının şablonu
+const tmplModalExportTodoLists = (title, button1) => {
     return `<div class="d-flex pt-3 px-3">
         <div class="flex-grow-1" style="min-width: 0;">
-            <h5 class="text-secondary text-truncate mb-0">Export</h5>
+            <h5 class="text-secondary text-truncate mb-0">${title}</h5>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -279,7 +283,7 @@ const tmplModalExportTodoLists = () => {
     <hr/>
     <div class="d-flex pb-3 px-3 justify-content-end">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-            <i class="bi bi-x-lg me-2"></i>Close
+            <i class="bi bi-x-lg me-2"></i>${button1}
         </button>
     </div>`;
 }

@@ -29,7 +29,7 @@ $(document).on('click', '#btnCreateTodoList', function () {
         //--input'a "border-danger" class'ı ekliyoruz
         $('#inputTodoListName').addClass('border-danger');
         //--"alerts" alanına alert ekliyoruz
-        $('#createTodoList main .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> You need to enter todolist\'s name !!!'));
+        $('#createTodoList main .alerts').prepend(tmplAlert('alert-danger', languages[17][lang]));
 
     }
     //--dolu ise
@@ -86,7 +86,7 @@ $(document).on('click', '#btnModalAddTodo', function(){
         //--input'a "border-danger" class'ı ekliyoruz
         input.addClass('border-danger');
         //--"alerts" alanına alert ekliyoruz
-        $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
+        $('.modal .alerts').prepend(tmplAlert('alert-danger', languages[18][lang]));
 
     }
     //--dolu ise
@@ -283,7 +283,7 @@ $(document).on('click', '#btnModalUpdateTodo', function(){
         //--input'a "border-danger" class'ı ekliyoruz
         input.addClass('border-danger');
         //--"alerts" alanına alert ekliyoruz
-        $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter todo !!!'));
+        $('.modal .alerts').prepend(tmplAlert('alert-danger', languages[18][lang]));
 
     }
     //--dolu ise
@@ -339,7 +339,7 @@ $(document).on('click', '#btnModalImport', function(){
         //--input'a "border-danger" class'ı ekliyoruz
         input.addClass('border-danger');
         //--"alerts" alanına alert ekliyoruz
-        $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> Enter JSON !!!'));
+        $('.modal .alerts').prepend(tmplAlert('alert-danger', languages[19][lang]));
 
     }
     //--dolu ise
@@ -372,7 +372,7 @@ $(document).on('click', '#btnModalImport', function(){
             //--input'a "border-danger" class'ı ekliyoruz
             input.addClass('border-danger');
             //--"alerts" alanına alert ekliyoruz
-            $('.modal .alerts').prepend(tmplAlert('alert-danger', '<b>Alert:</b> JSON format is incorrect !!!'));
+            $('.modal .alerts').prepend(tmplAlert('alert-danger', languages[20][lang]));
 
         }
 
@@ -396,6 +396,20 @@ $(document).on('click', '.btnExportTodoLists', function(e){
     $('#inputExportTodoLists').html(JSON.stringify(todoLists));
     //--modal açılıyor
     modal.show();
+
+});
+//-- -
+
+//-- +
+//--"flag" classına sahip bayraklara tıkladığımızda yapılacak işlemler
+$(document).on('click', '.flag', function(){
+
+    //--bayrak üzerindeki data-lang'ın değerini alıyoruz
+    lang = $(this).attr('data-lang');
+    //--localStorage'deki lang değerini oluşturuyoruz yada güncelliyoruz
+    localStorage.setItem('lang', lang);
+    //--render işlemi gerçekleştiriyor
+    render();
 
 });
 //-- -

@@ -34,12 +34,23 @@ const targetAddItems = type => {
 }
 
 //--hangi modal şablonun yükleneceğini belirleyen foksiyon
-const modalTmpl = type => {
+const modalTmpl = () => {
 
-    return (type === 'add') ? tmplModalAddTodo() :
-    (type === 'details') ? tmplModalDetailsTodo(getTodoID, getTodoValue) :
-    (type === 'import') ? tmplModalImportTodoLists() :
-    (type === 'export') ? tmplModalExportTodoLists() : false;
+    return (modalType === 'add') ? tmplModalAddTodo(languages[9][lang], languages[11][lang], languages[9][lang], languages[10][lang]) :
+    (modalType === 'details') ? tmplModalDetailsTodo(getTodoID, getTodoValue, languages[12][lang], languages[11][lang], languages[13][lang], languages[10][lang]) :
+    (modalType === 'import') ? tmplModalImportTodoLists(languages[4][lang], languages[14][lang], languages[4][lang], languages[10][lang]) :
+    (modalType === 'export') ? tmplModalExportTodoLists(languages[5][lang], languages[10][lang]) : false;
+
+}
+
+//--sistemdeki dilleri ekrana basmak için gerekli olan fonksiyon
+const targetAddFlags = () => {
+
+    $.each(languageFlags, function(index, row){
+
+        $('#languageFlags').append(tmplLangFlag(row.lang, row.src, lang));
+
+    });
 
 }
 
@@ -47,6 +58,7 @@ const modalTmpl = type => {
 const render = () => {
 
     //--ilk olarak bütün gerekli alanları temizliyoruz
+    $('#languageFlags').empty();
     $('#createTodoList main .alerts').empty();
     $('.todoLists header').empty();
     $('.todoLists main .row').empty();
@@ -57,23 +69,24 @@ const render = () => {
     $('.modal .modal-body').empty();
 
     //--herhangi bir koşula bağlı olmayan alanları ekliyoruz
-    $('#createTodoList').html(tmplCreateTodoList());
-    $('#todoListsMobileMenuButton').html(tmpltodoListsMobileMenuButton());
-    $('.modal .modal-body').html(modalTmpl(modalType));
+    targetAddFlags();
+    $('#createTodoList').html(tmplCreateTodoList(languages[0][lang], languages[1][lang], languages[2][lang]));
+    $('#todoListsMobileMenuButton').html(tmpltodoListsMobileMenuButton(languages[3][lang]));
+    $('.modal .modal-body').html(modalTmpl());
 
     //--dizinin eleman sayısına göre gerekli alanlarda işlemler yapıyoruz
     //--dizinin içerisinde başlangıçta eleman var ise
     if(arrayGreaterThanZero(todoLists))
     {
-        $('.todoLists header').html(tmplTodoListsHeader(true));
+        $('.todoLists header').html(tmplTodoListsHeader(true, languages[3][lang], languages[4][lang], languages[5][lang], languages[6][lang]));
 
         targetAddItems('todoList');
 
-        $('#todos header').html(tmplTodosHeader(todoLists[listID].name, arrayGreaterThanZero(todoLists[listID].todos)));
+        $('#todos header').html(tmplTodosHeader(todoLists[listID].name, arrayGreaterThanZero(todoLists[listID].todos), languages[7][lang]));
 
-        $('#todos #addTodo').html(tmplTodosAddTodo());
+        $('#todos #addTodo').html(tmplTodosAddTodo(languages[8][lang]));
 
-        (arrayGreaterThanZero(todoLists[listID].todos)) ? true : $('#todos #addTodo .alerts').html(tmplAlert('alert-info', '<b>Hint:</b> Todo not found !!! Please add todo.'));
+        (arrayGreaterThanZero(todoLists[listID].todos)) ? true : $('#todos #addTodo .alerts').html(tmplAlert('alert-info', languages[16][lang]));
 
         (arrayGreaterThanZero(todoLists[listID].todos)) ? targetAddItems('todos') : $('#todos main .row').html(tmplTodosItemPlaceholder(5));
     }
@@ -81,9 +94,9 @@ const render = () => {
     else
     {
         
-        $('#createTodoList main .alerts').html(tmplAlert('alert-info', '<b>Hint:</b> Todo list not found !!! Please create a new todo list.'));
+        $('#createTodoList main .alerts').html(tmplAlert('alert-info', languages[15][lang]));
         
-        $('.todoLists header').html(tmplTodoListsHeader(false));
+        $('.todoLists header').html(tmplTodoListsHeader(false, languages[3][lang], languages[4][lang], languages[5][lang], languages[6][lang]));
        
         $('.todoLists main .row').html(tmplTodoListsItemPlaceholder(5));
 
