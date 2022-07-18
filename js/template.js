@@ -6,10 +6,30 @@ const tmplAlert = (className, message) => {
         ${message}
     </div>`;
 }
+//--"createTodoList" alanında kullanılan şablon
+const tmplCreateTodoList = () => {
+    return `<header>
+        <h1 class="text-secondary mb-0 text-truncate">Create New Todo List</h1>
+    </header>
+    <hr />
+    <main>
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control" id="inputTodoListName"
+                placeholder="Enter Todolist's name...">
+            <button type="button" id="btnCreateTodoList" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-2"></i>Create
+            </button>
+        </div>
+        <div class="alerts"></div>
+        <div class="hints"></div>
+    </main>`;
+}
 //--"todoLists > header" alanında kullanılan şablonu
 const tmplTodoListsHeader = status => {
-    return `<div class="d-flex justify-content-between">
-        <h2 class="text-secondary mb-0">Todo Lists</h2>
+    return `<div class="d-flex">
+        <div class="flex-grow-1" style="min-width: 0;">
+            <h2 class="text-secondary mb-0 text-truncate">Todo Lists</h2>
+        </div>
         <div>
             <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -165,7 +185,7 @@ const tmplTodosItem = (id, value, status) => {
 //--"offcanvasTodoLists" offcanvas'ını açan butonun şablonu
 const tmpltodoListsMobileMenuButton = () => {
     return `<button type="button" class="btn btn-outline-secondary btn-lg border-0 w-100">
-        <h2 class="mb-0">
+        <h2 class="mb-0 text-truncate">
             <i class="bi bi-list me-2"></i>Todo Lists
         </h2>
     </button>`;
@@ -173,7 +193,9 @@ const tmpltodoListsMobileMenuButton = () => {
 //--"modalAddTodo" modal'ının şablonu
 const tmplModalAddTodo = () => {
     return `<div class="d-flex pt-3 px-3">
-        <h5 class="text-secondary flex-grow-1 mb-0">Add</h5>
+        <div class="flex-grow-1" style="min-width: 0;">
+            <h5 class="text-secondary text-truncate mb-0">Add</h5>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
@@ -195,7 +217,9 @@ const tmplModalAddTodo = () => {
 //--"modalDetailsTodo" modal'ının şablonu
 const tmplModalDetailsTodo = (id, value) => {
     return `<div class="d-flex pt-3 px-3">
-        <h5 class="text-secondary flex-grow-1 mb-0">Details</h5>
+        <div class="flex-grow-1" style="min-width: 0;">
+            <h5 class="text-secondary text-truncate mb-0">Details</h5>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
@@ -217,7 +241,9 @@ const tmplModalDetailsTodo = (id, value) => {
 //--
 const tmplModalImportTodoLists = () => {
     return `<div class="d-flex pt-3 px-3">
-        <h5 class="text-secondary flex-grow-1 mb-0">Import</h5>
+        <div class="flex-grow-1" style="min-width: 0;">
+            <h5 class="text-secondary text-truncate mb-0">Import</h5>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
@@ -240,7 +266,9 @@ const tmplModalImportTodoLists = () => {
 //--
 const tmplModalExportTodoLists = () => {
     return `<div class="d-flex pt-3 px-3">
-        <h5 class="text-secondary flex-grow-1 mb-0">Export</h5>
+        <div class="flex-grow-1" style="min-width: 0;">
+            <h5 class="text-secondary text-truncate mb-0">Export</h5>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <hr/>
