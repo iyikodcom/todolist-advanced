@@ -217,7 +217,7 @@ $(document).on('click', '#todoListsMobileMenuButton button', function(){
 
 //-- +
 //--"offcanvasTodoLists > offcanvas-body > list" class'ına tıklayınca yapılacak işlemler
-$(document).on('click', '#offcanvasTodoLists .offcanvas-body .list', function(){
+$(document).on('click', '.offcanvas .offcanvas-body .list', function(){
 
     //--offcanvas kapanıyor
     offcanvasTodoListsMobile.hide();

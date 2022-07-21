@@ -287,4 +287,10 @@ const tmplModalExportTodoLists = (title, button1) => {
         </button>
     </div>`;
 }
+//--mobil menüyü kapatmak için gerekli olan butonun şablonu
+const tmpltodoListsMobileMenuCloseButton = button => {
+    return `<button type="button" class="btn btn-danger w-100" data-bs-dismiss="offcanvas">
+        <i class="bi bi-x-lg me-2"></i>${button}
+    </button>`;
+}
 //-- -

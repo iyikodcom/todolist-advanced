@@ -67,12 +67,14 @@ const render = () => {
     $('#todos main .row').empty();
     $('#todoListsMobileMenuButton').empty();
     $('.modal .modal-body').empty();
+    $('.offcanvas .offcanvas-header').empty();
 
     //--herhangi bir koşula bağlı olmayan alanları ekliyoruz
     targetAddFlags();
     $('#createTodoList').html(tmplCreateTodoList(languages[0][lang], languages[1][lang], languages[2][lang]));
     $('#todoListsMobileMenuButton').html(tmpltodoListsMobileMenuButton(languages[3][lang]));
     $('.modal .modal-body').html(modalTmpl());
+    $('.offcanvas .offcanvas-header').html(tmpltodoListsMobileMenuCloseButton(languages[10][lang]));
 
     //--dizinin eleman sayısına göre gerekli alanlarda işlemler yapıyoruz
     //--dizinin içerisinde başlangıçta eleman var ise
