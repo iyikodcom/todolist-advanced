@@ -27,6 +27,10 @@ Tarayıcıların sahip olduğu "localStorage" özelliği ile birlikte çalışan
 - Listeleri ve maddelerini içe aktarma (JSON formatında)
 - Dil seçeneği (Türkçe ve İngilizce)
 
+
+## Tanıtım Videosu
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/EAlKtXqP90Y/0.jpg)](https://www.youtube.com/watch?v=EAlKtXqP90Y)
+
   
 ## Örnek JSON Formatı (İçe Aktarma işlem için)
 
